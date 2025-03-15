@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@font-face {
+  font-family:"Averta Black" ;
+  src: url('../../public/fonts/Averta Cyrillic Black.otf');
+}
+@font-face {
+  font-family: "Averta Bold";
+  src: url('../../public/fonts/Averta Cyrillic Bold.otf');
+}
+@font-face {
+  font-family: "Averta Extra Thin";
+  src: url('../../public/fonts/Averta Cyrillic Extra Thin.otf');
+}
+@font-face {
+  font-family: "Averta ExtraBold";
+  src: url('../../public/fonts/Averta Cyrillic ExtraBold.otf');
+}
+@font-face {
+  font-family: "Averta Light";
+  src: url('../../public/fonts/Averta Cyrillic Light.otf');
+}
+@font-face {
+  font-family: "Averta Regular";
+  src: url('../../public/fonts/Averta Cyrillic Regular.otf');
+}
+@font-face {
+  font-family: "Averta SemiBold";
+  src: url('../../public/fonts/Averta Cyrillic SemiBold.otf');
+}
+@font-face {
+  font-family: "Averta Thin";
+  src: url('../../public/fonts/Averta Cyrillic Thin.otf');
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+    --background:"#ff32"
+  }
+}
+
+body {
+  color: rgb(var(--background-start-rgb));
+  background:
+  /* (var(--background)) */
+   /* linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    ) */
+    rgb(var(--foreground-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* // */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide the default checkbox */
+.custom-checkbox {
+  appearance: none;
+  position: absolute;
+  opacity: 0;
+}
+
+/* Style the custom checkbox */
+.custom-checkbox+label .checkmark {
+  background-color: #fff;
+}
+
+/* When checked, change the background color and show the tick */
+.custom-checkbox:checked+label .checkmark {
+  background-color: #50d71e;
+  /* Green background when checked */
+  border-color: #50d71e;
+}
+
+.custom-checkbox:checked+label .checkmark {
+  display: flex;
+}
+
+/*  */
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #3490dc;
+  /* Customize border color */
+  border-radius: 4px;
+  background-color: #f3f4f6;
+  /* Customize background color */
+  /* position: relative; */
+  cursor: pointer;
+}
+
+.custom-checkbox:checked {
+  background-color: #38b2ac;
+  /* Background color when checked */
+  border-color: #38b2ac;
+  /* Border color when checked */
+}
+
+.custom-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  /* Tick color */
+  transform: translate(-50%, -50%);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.slider-wrapper {
+  transition: animation-play-state 0.3s ease;
+}
+
+.slider-wrapper:hover {
+  animation-play-state: paused;
+  /* Pause the animation on hover */
+}
+
+
+.custom-radio {
+  appearance: none;
+  width: 24px;
+  /* Adjust size as needed */
+  height: 24px;
+  /* Adjust size as needed */
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  /* Border color */
+  background-color: #fff;
+  /* Background color */
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-radio:checked {
+  border-color: #2B7F75;
+  /* Color when checked */
+}
+
+.custom-radio:checked::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  /* Adjust inner dot size */
+  height: 12px;
+  /* Adjust inner dot size */
+  border-radius: 50%;
+  background-color: #2B7F75;
+  /* Inner dot color */
+  transform: translate(-50%, -50%);
+}
