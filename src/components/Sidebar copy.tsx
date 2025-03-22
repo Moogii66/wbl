@@ -1,16 +1,12 @@
-import { usePathname } from "next/navigation";
-import Logo from "./Logo";
-import classNames from "classnames";
 import Link from "next/link";
+import Logo from "./Logo";
 import { TableDocument } from "iconsax-react";
-import { useMemo } from "react";
-import CollapseIcon from "./icons/CollapseIcon";
+import { usePathname } from "next/navigation";
+import classNames from "classnames";
 
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  toggleCollapse: boolean;
-  setToggleCollapse: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface MenuItem {
@@ -20,52 +16,17 @@ interface MenuItem {
   link: string;
 }
 
-export default function Sidebar({
-  isOpen,
-  setIsOpen,
-  toggleCollapse,
-  setToggleCollapse,
-}: SidebarProps) {
+export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
   const pathname = usePathname();
-
-  // const wrapperClasses = classNames(
-  //   "h-screen px-4 pt-8 pb-4 flex justify-between flex-col bg-primary z-40 transition-all duration-300",
-  //   {
-  //     // --- Mobile ---
-  //     "fixed top-0 left-0 w-64 block shadow-xl md:hidden": isOpen,
-  //     "hidden md:hidden": !isOpen,
-
-  //     // --- Desktop ---
-  //     "hidden md:flex md:relative": true, // always render on desktop
-  //     "md:w-80": !toggleCollapse,
-  //     "md:w-20": toggleCollapse,
-  //   }
-  // );
 
   const wrapperClasses = classNames(
     "h-screen px-4 pt-8 pb-4 flex justify-between flex-col bg-primary z-40 transition-all duration-300",
-    // {
-    //   ["w-80"]: !toggleCollapse,
-    //   ["w-20"]: toggleCollapse,
-    // }
+    "md:relative md:w-80 md:block hidden", // Desktop default
     {
-      "hidden md:block md:relative md:w-60": !isOpen, // desktop or mobile closed
-      "fixed top-0 left-0 w-64 block shadow-xl": isOpen, // mobile open
+      // Mobile modal style
+      "fixed top-0 left-0 w-64 block shadow-xl": isOpen,
     }
   );
-
-  // const wrapperClasses = classNames(
-  //   "h-screen px-4 pt-8 pb-4 flex justify-between flex-col bg-primary z-40 transition-all duration-300",
-  //   "md:relative md:w-80 md:block hidden", // Desktop default
-  //   {
-  //     "hidden md:block md:relative md:w-80": !isOpen,
-  //     "fixed top-0 left-0 w-64 block shadow-xl": isOpen,
-  //   }
-  //   // {
-  //   //   // Mobile modal style
-  //   //   "fixed top-0 left-0 w-64 block shadow-xl": isOpen,
-  //   // }
-  // );
 
   const menuItems: MenuItem[] = [
     { id: 0, label: "Жагсаалт", icon: "HomeIcon", link: "/dashboard" },
@@ -74,11 +35,6 @@ export default function Sidebar({
     //   { id: 2, label: "Курс", icon: "Data", link: "/course" },
     //   { id: 3, label: "Мэдэгдэл", icon: "Notification", link: "/notification" },
   ];
-
-  const activeMenu = useMemo(
-    () => menuItems.find((menu) => menu.link === pathname),
-    [pathname]
-  );
 
   return (
     <>
@@ -93,86 +49,37 @@ export default function Sidebar({
       <div className={wrapperClasses}>
         <div className="flex flex-col">
           <div className="flex items-center justify-between relative">
+            <Logo />
             {/* Close button for mobile */}
-            {/* <button
+            <button
               className="p-2 rounded bg-light-lighter md:hidden"
               onClick={() => setIsOpen(false)}
             >
               ✕
-            </button> */}
-
-            <div className="flex items-center pl-1 gap-4">
-              <div className="cursor-pointer">
-                <Logo className="" />
-              </div>
-            </div>
-            {/* <button
-              className="p-4 rounded bg-light-lighter absolute right-0"
-              onClick={() => setToggleCollapse(!toggleCollapse)}
-            >
-              <CollapseIcon />
-            </button> */}
+            </button>
           </div>
 
           <div className="flex flex-col items-start mt-10">
             {menuItems.map((menu, index) => (
-              <div
+              <Link
+                href={menu.link}
                 key={index}
-                className={classNames(
-                  "flex items-center cursor-pointer hover:bg-white/10 rounded w-full overflow-hidden whitespace-nowrap mb-2 text-white",
-                  { "bg-white/10 text-white": activeMenu?.id === menu.id }
-                )}
+                onClick={() => setIsOpen(false)}
               >
-                <Link href={menu.link} onClick={() => setIsOpen(false)}>
-                  <div className="flex py-4 px-3 items-center h-full">
-                    {/* <div style={{ width: "2.5rem" }}>{getIcon(menu.icon)}</div> */}
-                    {/* <DocumentText1 size="24" /> */}
-                    <TableDocument
-                      color="#eee"
-                      variant="Linear"
-                      size={24}
-                      className="mr-4"
-                    />
-
-                    {/* {!toggleCollapse && ( */}
-                    <span className="text-md font-semibold text-lg text-white">
-                      {menu.label}
-                    </span>
-                    {/* )} */}
-                  </div>
-                </Link>
-              </div>
+                <div className="flex items-center py-4 px-3 hover:bg-white/10 rounded text-white">
+                  <TableDocument
+                    color="#eee"
+                    variant="Linear"
+                    size={24}
+                    className="mr-4"
+                  />
+                  <span className="text-md font-semibold text-lg">
+                    {menu.label}
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
-          {/* <div className="flex flex-col items-start mt-10">
-            {menuItems.map((menu, index) => (
-              <div
-                key={index}
-                className={classNames(
-                  "flex items-center cursor-pointer hover:bg-white/10 rounded w-full overflow-hidden whitespace-nowrap mb-2 text-white",
-                  { "bg-white/10 text-white": activeMenu?.id === menu.id }
-                )}
-              >
-                <Link
-                  href={menu.link}
-                  key={index}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className="flex items-center py-4 px-3 hover:bg-white/10 rounded text-white">
-                    <TableDocument
-                      color="#eee"
-                      variant="Linear"
-                      size={24}
-                      className="mr-4"
-                    />
-                    <span className="text-md font-semibold text-lg">
-                      {menu.label}
-                    </span>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div> */}
         </div>
       </div>
     </>
@@ -234,29 +141,12 @@ export default function Sidebar({
 //     [pathname]
 //   );
 
-//   // const wrapperClasses = classNames(
-//   //   "h-screen px-4 pt-8 pb-4 flex justify-between flex-col bg-primary z-40 transition-all duration-300",
-//   //   "md:relative md:w-80 md:block hidden", // Desktop default
-//   //   {
-//   //     // Mobile modal style
-//   //     "fixed top-0 left-0 w-64 block shadow-xl": toggleCollapse,
-//   //   },
-//   //   {
-//   //     ["w-80"]: !toggleCollapse,
-//   //     ["w-20"]: toggleCollapse,
-//   //   }
-//   // );
-
 //   const wrapperClasses = classNames(
 //     "h-screen px-4 pt-8 pb-4 flex justify-between flex-col border-r-2 bg-primary",
 //     {
 //       ["w-80"]: !toggleCollapse,
 //       ["w-20"]: toggleCollapse,
 //     }
-//       {
-//         // Mobile modal style
-//         "fixed top-0 left-0 w-64 block shadow-xl": toggleCollapse,
-//       },
 //   );
 
 //   const getIcon = (icon: string) => {

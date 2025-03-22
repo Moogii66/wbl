@@ -9,36 +9,36 @@
 }
 
 @font-face {
-  font-family:"Averta Black" ;
-  src: url('../../public/fonts/Averta Cyrillic Black.otf');
+  font-family: "Averta Black";
+  src: url("../../public/fonts/Averta Cyrillic Black.otf");
 }
 @font-face {
   font-family: "Averta Bold";
-  src: url('../../public/fonts/Averta Cyrillic Bold.otf');
+  src: url("../../public/fonts/Averta Cyrillic Bold.otf");
 }
 @font-face {
   font-family: "Averta Extra Thin";
-  src: url('../../public/fonts/Averta Cyrillic Extra Thin.otf');
+  src: url("../../public/fonts/Averta Cyrillic Extra Thin.otf");
 }
 @font-face {
   font-family: "Averta ExtraBold";
-  src: url('../../public/fonts/Averta Cyrillic ExtraBold.otf');
+  src: url("../../public/fonts/Averta Cyrillic ExtraBold.otf");
 }
 @font-face {
   font-family: "Averta Light";
-  src: url('../../public/fonts/Averta Cyrillic Light.otf');
+  src: url("../../public/fonts/Averta Cyrillic Light.otf");
 }
 @font-face {
   font-family: "Averta Regular";
-  src: url('../../public/fonts/Averta Cyrillic Regular.otf');
+  src: url("../../public/fonts/Averta Cyrillic Regular.otf");
 }
 @font-face {
   font-family: "Averta SemiBold";
-  src: url('../../public/fonts/Averta Cyrillic SemiBold.otf');
+  src: url("../../public/fonts/Averta Cyrillic SemiBold.otf");
 }
 @font-face {
   font-family: "Averta Thin";
-  src: url('../../public/fonts/Averta Cyrillic Thin.otf');
+  src: url("../../public/fonts/Averta Cyrillic Thin.otf");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,7 +46,7 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
-    --background:"#ff32"
+    --background: "#ff32";
   }
 }
 
@@ -58,8 +58,9 @@ body {
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
-    ) */
-    rgb(var(--foreground-start-rgb));
+    ) */ rgb(
+    var(--foreground-start-rgb)
+  );
 }
 
 @layer utilities {
@@ -81,18 +82,18 @@ body {
 }
 
 /* Style the custom checkbox */
-.custom-checkbox+label .checkmark {
+.custom-checkbox + label .checkmark {
   background-color: #fff;
 }
 
 /* When checked, change the background color and show the tick */
-.custom-checkbox:checked+label .checkmark {
+.custom-checkbox:checked + label .checkmark {
   background-color: #50d71e;
   /* Green background when checked */
   border-color: #50d71e;
 }
 
-.custom-checkbox:checked+label .checkmark {
+.custom-checkbox:checked + label .checkmark {
   display: flex;
 }
 
@@ -120,7 +121,7 @@ body {
 }
 
 .custom-checkbox:checked::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -141,7 +142,6 @@ body {
   /* Pause the animation on hover */
 }
 
-
 .custom-radio {
   appearance: none;
   width: 24px;
@@ -158,12 +158,12 @@ body {
 }
 
 .custom-radio:checked {
-  border-color: #2B7F75;
+  border-color: #3c164c;
   /* Color when checked */
 }
 
 .custom-radio:checked::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -172,7 +172,7 @@ body {
   height: 12px;
   /* Adjust inner dot size */
   border-radius: 50%;
-  background-color: #2B7F75;
+  background-color: #3c164c;
   /* Inner dot color */
   transform: translate(-50%, -50%);
 }

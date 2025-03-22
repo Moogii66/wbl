@@ -1,184 +1,125 @@
 "use client";
-import React, { useRef, useState } from "react";
-import Webcam from "react-webcam";
-import Tesseract from "tesseract.js";
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@/components/ui/Table";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import React, { useState } from "react";
 
-interface Item {
-  id: number;
-  text: string;
-  date: string;
-  status: string;
-}
+import classNames from "classnames";
+import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [capturedText, setCapturedText] = useState<string>("");
-  const [items, setItems] = useState<Item[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editText, setEditText] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<"add" | "list">("add");
-  const webcamRef = useRef<Webcam>(null);
+  // npx ngrok http 3000
 
-  const captureText = async () => {
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (!imageSrc) {
-      alert("Failed to capture image. Please try again.");
-      return;
-    }
+  const router = useRouter();
+  const [phoneNumber, setPhoneNumber] = useState("80620779");
 
-    try {
-      const {
-        data: { text },
-      } = await Tesseract.recognize(imageSrc, "eng", {
-        logger: (m) => console.log(m),
-      });
-      setCapturedText(text);
-      setItems((prevItems) => [
-        ...prevItems,
-        {
-          id: Date.now(),
-          text,
-          date: new Date().toLocaleString(),
-          status: "In",
-        },
-      ]);
-    } catch (error) {
-      console.error("OCR Error:", error);
-      alert("Error reading image. Please try again.");
-    }
+  const [password, setPassword] = useState("1234");
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [loading, setLoad] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoad(true);
+
+    //  fetchPlayerId();
+
+    setTimeout(async () => {
+      const _formData = {
+        phoneNumber: phoneNumber,
+        password: password,
+      };
+      console.log("_formData :>> ", _formData);
+
+      if (phoneNumber === "80620779" && password === "1234") {
+        router.replace("/dashboard");
+      }
+      //  try {
+      //    await auth
+      //      .login("/login", formData, false, landing ? landing : "", playerId)
+      //      .then((response) => {
+      //        console.log("response :>> ", response);
+      //      })
+      //      .catch((e: any) => {
+      //        console.log("asdasdsa", e);
+      //        console.warn(e);
+      //        toast.error(e?.errors[0]);
+      //        setLoad(false);
+      //        setAlert({
+      //          visible: true,
+      //          type: "warning",
+      //          message: e?.errors[0],
+      //        });
+      //        // if (e?.msg && e.msg.length > 0) {
+      //        //   setAlertData((existingValues) => ({
+      //        //     ...existingValues,
+      //        //     title: "Анхааруулга",
+      //        //     body: e?.msg[0],
+      //        //     type: "warning",
+      //        //     isShow: true,
+      //        //   }));
+      //        // }
+      //      });
+      //  } catch (e: any) {
+      //    // setIsLoading(false);
+      //    console.warn(e);
+      //    setLoad(false);
+      //    // setFormData((d) => ({
+      //    //   ...d,
+      //    //   password: "",
+      //    // }));
+      //  }
+    }, 500);
+
+    // setLoad(false);
   };
 
-  const handleEdit = (id: number, text: string) => {
-    setEditingId(id);
-    setEditText(text);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
-  const saveEdit = (id: number) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, text: editText } : item
-      )
-    );
-    setEditingId(null);
-  };
+  const inputClass =
+    "w-full p-4 border border-border rounded-lg  focus:border-primary text-text-primary font-regular text-18 placeholder-shown:font-regular resize-none overflow-hidden outline-0";
 
-  const deleteItem = (id: number) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
+  const hideClass =
+    "absolute inset-y-0 right-0 flex items-center px-3 text-gray-500";
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-xl font-bold mb-4">
-        Text Detection & Editable Table GANG
-      </h1>
-
-      {/* Mobile Side Menu */}
-      <div className="md:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-lg p-4">
-        <h2 className="text-lg font-semibold mb-4">Menu</h2>
-        <ul>
-          <li>
-            <Button
-              onClick={() => setActiveTab("add")}
-              className={`w-full text-left ${
-                activeTab === "add" ? "bg-blue-600 text-white" : ""
-              }`}
-            >
-              Add
-            </Button>
-          </li>
-          <li>
-            <Button
-              onClick={() => setActiveTab("list")}
-              className={`w-full text-left mt-2 ${
-                activeTab === "list" ? "bg-blue-600 text-white" : ""
-              }`}
-            >
-              List
-            </Button>
-          </li>
-        </ul>
-      </div>
-
-      {/* Add Section (Only visible in mobile when 'add' tab is active) */}
-      {activeTab === "add" && (
-        <div className="md:block hidden pl-64">
-          <Webcam
-            ref={webcamRef}
-            audio={false}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{ facingMode: { exact: "environment" } }}
-            className="w-full rounded-lg border border-gray-300 mb-4"
-            onUserMediaError={() =>
-              alert(
-                "Camera access denied. Check browser permissions and try HTTPS."
-              )
-            }
+    <div className="h-screen w-screen flex bg-primary justify-center items-center ">
+      <div className="h-96 w-96 bg-white rounded-2xl justify-center pt-10">
+        <div className="font-bold text-24 text-center">Нэвтрэх</div>
+        <form onSubmit={handleSubmit} className="justify-center w-96  p-10">
+          <input
+            type=""
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            className={inputClass}
+            placeholder="Утасны дугаар"
           />
-          <Button onClick={captureText}>Capture Text</Button>
-          {capturedText && (
-            <p className="mt-2 text-sm">Detected: {capturedText}</p>
-          )}
-        </div>
-      )}
 
-      {/* List Section (Only visible in mobile when 'list' tab is active) */}
-      {activeTab === "list" && (
-        <div className="pl-64">
-          <Table className="mt-4">
-            <TableHead>
-              <TableRow>
-                <TableCell>Text</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {editingId === item.id ? (
-                      <Input
-                        value={editText}
-                        onChange={(e) => setEditText(e.target.value)}
-                      />
-                    ) : (
-                      item.text
-                    )}
-                  </TableCell>
-                  <TableCell>{item.date}</TableCell>
-                  <TableCell>{item.status}</TableCell>
-                  <TableCell>
-                    {editingId === item.id ? (
-                      <Button onClick={() => saveEdit(item.id)}>Save</Button>
-                    ) : (
-                      <>
-                        <Button onClick={() => handleEdit(item.id, item.text)}>
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => deleteItem(item.id)}
-                          className="ml-2 text-red-600"
-                        >
-                          Delete
-                        </Button>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+          <div className=" relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={classNames(inputClass, "my-4")}
+              placeholder="Нууц үг"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className={hideClass}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          <div className=" flex place-content-center">
+            <Button type="submit" loading={loading}>
+              Нэвтрэх
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
